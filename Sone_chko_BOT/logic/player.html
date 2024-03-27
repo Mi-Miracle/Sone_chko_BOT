@@ -1,0 +1,67 @@
+<div class="player-container">
+    <div id="player" class="player" style="display: none;"></div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '360',
+            width: '640',
+            playerVars: {
+                'listType': 'playlist',
+                'list': 'PLgj489DmJtvYJboFYW8x0qvBbwxkpwqAO',
+                'autoplay': 1
+            },
+            events: {
+                'onError': onPlayerError,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    
+  function onPlayerError(event) {
+     if (event.data === 100 || event.data === 150) {
+            document.getElementById('player').innerHTML = '<img src="https://github.com/Mi-Miracle/Sone_chko_BOT/blob/main/Sone_chko_BOT/сонечко.png" alt="Альтернативне зображення">';
+            playNextTrack();
+        }
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            playNextTrack();
+        }
+    }
+
+    function playNextTrack() {
+        var nextIndex = player.getPlaylistIndex() + 1;
+        player.playVideoAt(nextIndex);
+    }
+
+    document.getElementById('toggle-player').addEventListener('change', function() {
+        var playerDiv = document.getElementById('player');
+        var musicLabel = document.querySelector('.music-label');
+
+        if (this.checked) {
+            playerDiv.style.display = 'block';
+            musicLabel.innerText = 'Музика';
+            player.playVideo();
+        } else {
+            playerDiv.style.display = 'none';
+            musicLabel.innerText = 'Музика (приховано)';
+            player.pauseVideo();
+        }
+    });
+
+    function loadYouTubeAPI() {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    document.addEventListener("DOMContentLoaded", loadYouTubeAPI);
+</script>

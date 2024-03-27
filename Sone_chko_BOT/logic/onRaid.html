@@ -1,0 +1,15 @@
+<script type="text/javascript">
+// JavaScript код для обробки повідомлень чату
+
+
+
+var TWITCHUSER = "damianamiss";
+var OAUTH = "oauth:u3okjrpyizzcxiytk93tqr419nck0t";
+
+// Обробник подій нашого стріма
+ComfyJS.onRaid = (user, viewers) => {
+    ComfyJS.Say(`/shoutout ${user}`);
+}
+
+// Ласкаво просимо рейдера та підписників нашого стріма
+ComfyJS.Say(`Вітаю ${user} з ${viewers} котиками! Проходьте, вмощуйтесь зручніше, розповідайте шо робили.`);

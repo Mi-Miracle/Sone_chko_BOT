@@ -1,0 +1,60 @@
+<script type="text/javascript">
+// JavaScript код для обробки повідомлень чату
+
+var TWITCHUSER = "damianamiss";
+var OAUTH = "oauth:u3okjrpyizzcxiytk93tqr419nck0t";
+
+let greetedUsers = []; // Масив для зберігання користувачів, які були вітані
+let farewelledUsers = []; // Масив для зберігання користувачів, які були прощені
+let greetingsEnabled = true;
+
+
+// Обробник повідомлень чату
+ComfyJS.onChat = (user, message, flags, self, extra) => {
+    console.log('do something');
+    if (greetingsEnabled) {
+        if (flags.customReward && extra.customRewardId === "9e5ecb45-b134-4fad-a854-cf130b4894fa") {
+            ComfyJS.Say("!sr " + message);
+        }
+
+        if (!self) {
+            const greetings = ['привіт', 'доброго дня', 'добрий вечір', 'доброго ранку', 'добрий день', 'доброго вечора', 'вітання', 'привітики', 'охайо', 'здоров', 'ку', 'кусь', 'вітаю', 'привітики'];
+            const farewells = ['до побачення', 'прощавай', 'до зустрічі', 'допобачення', 'бувай', 'покеда', 'пока', 'покусі', 'я пішов'];
+
+            const includesGreeting = greetings.some(greeting =>
+                message.toLowerCase().includes(greeting)
+            );
+
+            const includesFarewell = farewells.some(farewell =>
+                message.toLowerCase().includes(farewell)
+            );
+
+            if (includesGreeting && !greetedUsers.includes(user)) {
+                greetedUsers.push(user); // Додаємо користувача до списку вітаних
+                const responses = [
+                    `Привіт, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}! Як справи?`,
+                    `Вітання, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}! Як пройшов ваш день?`,
+                    `Здоровенькі були, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}! Що нового розповісте?`
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                ComfyJS.Say(randomResponse);
+            }
+
+            if (includesFarewell && !farewelledUsers.includes(user)) {
+                const responses = [
+                    `До побачення, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}! Нехай у вас буде чудовий день!`,
+                    `Прощавайте, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}. Приємно було спілкуватися!`,
+                    `До зустрічі, ${extra.tags && extra.tags['display-name'] ? extra.tags['display-name'] : user}. Надіюсь, ще побачимося!`
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                ComfyJS.Say(randomResponse);
+                farewelledUsers.push(user); // Додаємо користувача до списку прощених
+            }
+        }
+    }
+};
+
+// Код, що йде після обробки повідомлення чату
+// Можна додати сюди інші обробники подій або код
+
+</script>

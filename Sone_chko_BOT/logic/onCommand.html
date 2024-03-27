@@ -1,0 +1,35 @@
+<script type="text/javascript">
+// JavaScript код для обробки повідомлень чату
+
+
+
+var TWITCHUSER = "damianamiss";
+var OAUTH = "oauth:u3okjrpyizzcxiytk93tqr419nck0t";
+
+let greetedUsers = []; // Масив для зберігання користувачів, які були вітані
+let farewelledUsers = []; // Масив для зберігання користувачів, які були прощені
+let greetingsEnabled = true;
+
+// Команда для обробки кастомних ревардів та команди "скинути" та інші команди
+ComfyJS.onCommand = (user, command, message, flags, extra) => {
+    if (flags.customReward && extra.customRewardId === "9e5ecb45-b134-4fad-a854-cf130b4894fa") {
+        ComfyJS.Say("!sr " + message);
+        console.log('do something in onCommand');
+    }
+    if (command === "скинути") {
+        // Очищаємо списки
+        greetedUsers = [];
+        farewelledUsers = [];
+        console.log("Списки користувачів, з якими було вітано та прощено, були скинуті.");
+    }
+    // Перевіряємо, чи це команда !таро
+    if (command === "таро") {
+        // Викликаємо функцію, яка відправляє випадковий блок тексту
+        sendRandomTextBlock('https://raw.githubusercontent.com/Mi-Miracle/Sone_chko_BOT/main/Sone_chko_BOT/Taro');
+    }
+	if (command === "вітальник") {
+        greetingsEnabled = !greetingsEnabled;
+        const status = greetingsEnabled ? "enabled" : "disabled";
+        ComfyJS.Say(`Greetings are now ${status}.`);
+    }
+};
